@@ -1,0 +1,16 @@
+{
+  "name": "04-intro",
+  "version": "1.0.0",
+  "description": "intro folder",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jaideep",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "validator": "^13.7.0"
+  },
+  "type": "module"
+}
