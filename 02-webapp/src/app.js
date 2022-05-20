@@ -1,12 +1,21 @@
-const path = require('path');
-const express = require('express');
-const hbs = require('hbs');
+// const path = require('path');
+// const express = require('express');
+// const hbs = require('hbs');
+// const { application } = require('express');
 // import request from 'request';
+
+import path from 'path';
+import express from 'express';
+import hbs from 'hbs';
+import getWeatherData from './utils/getWeatherData.js';
+import { ppid } from 'process';
 const app = express();
 
-const publicDirectoryPath = path.join(__dirname, '../public');
-const viewsPath = path.join(__dirname, '../templates/views');
-const partialsPath = path.join(__dirname, '../templates/partials');
+const dirname = 'C:\\Users\\jlalchandani\\vs-code-workplace\\node.jsdemos\\02-webapp\\src';
+
+const publicDirectoryPath = path.join(dirname, '../public');
+const viewsPath = path.join(dirname, '../templates/views');
+const partialsPath = path.join(dirname, '../templates/partials');
 
 console.log(publicDirectoryPath);
 console.log(partialsPath);
@@ -40,19 +49,36 @@ app.get('/help', (req,res) => {
     });
 });
 
-app.get('/weather', (res,req) => {
-    // request({url: url, json:true}, (error, response) => {
-    //         var s = (response.body.current.weather_descriptions[0] +
-    //         ". It is currently : " + 
-    //         response.body.current.temperature + "'C in " + 
-    //         response.body.location.name + ", " +
-    //         response.body.location.region);
-    //         console.log(s);
-    // });
-    res.send({
-        forecast: 'It is cloudy',
-        location: 'Lucknow',
+app.get('/weather', (req, res) => {
+    if (!req.query.city) {
+      return res.send({
+        error: 'You must provide a city !',
       });
+    }
+    getWeatherData(req.query.city, (data) => {
+      res.render('', {
+        title: 'Weather Report',
+        city: req.query.city,
+        weatherInfo: data,
+        name: 'Jaideep Lalchandani',
+      });
+    });
+  });
+
+app.get('/products', (req,res) => {
+    if(!req.query.search) {
+        return res.send({
+            error: "You need to provide a search term!"
+        });
+    }
+    console.log(req.query.search);
+    res.send({
+        products : []
+    });
+});
+
+app.get('/cityForm', (req,res) => {
+    res.render('cityForm');
 });
 
 app.listen(8081, () => {
